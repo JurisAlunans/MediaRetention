@@ -48,8 +48,8 @@ namespace MediaRetention
             [Column("FileName")]
             public required string FileName { get; set; }
 
-            [Column("Guid")]
-            public Guid Guid { get; set; }
+            [Column("DirectoryPath")]
+            public required string DirectoryPath { get; set; }
 
             [Column("Created")]
             public DateTime Created { get; set; }

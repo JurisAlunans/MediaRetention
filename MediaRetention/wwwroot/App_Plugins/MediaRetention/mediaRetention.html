@@ -1,3 +1,25 @@
-?<div ng-controller="MediaRetentionController as vm">
-    <h1>Media Retention</h1>
+<div ng-controller="MediaRetentionController as vm">
+    <uui-table aria-label="Backup file list table" ng-show="vm.items.length > 0">
+
+        <uui-table-head>
+            <uui-table-head-cell>FileName</uui-table-head-cell>
+            <uui-table-head-cell>Created By</uui-table-head-cell>
+            <uui-table-head-cell>Date</uui-table-head-cell>
+            <uui-table-head-cell>Actions</uui-table-head-cell>
+        </uui-table-head>
+
+        <uui-table-row ng-repeat="item in vm.items">
+            <uui-table-cell clip-text>{{item.FileName}}</uui-table-cell>
+            <uui-table-cell clip-text>{{item.Username}}</uui-table-cell>
+            <uui-table-cell clip-text>{{vm.formatDate(item.created)}}</uui-table-cell>
+            <uui-table-cell >
+                <uui-button-group>
+                    <uui-button look="primary" color="positive">Restore</uui-button>
+                    <uui-button look="primary" color="default">Download</uui-button>
+                    <uui-button look="primary" color="danger">Delete</uui-button>
+                </uui-button-group>
+            </uui-table-cell>
+        </uui-table-row>
+
+    </uui-table>
 </div>

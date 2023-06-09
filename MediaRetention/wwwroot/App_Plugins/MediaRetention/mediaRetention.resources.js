@@ -1,7 +1,7 @@
 (() => {
     function mediaRetentionService($http, umbRequestHelper) {
 
-        var apiRoot = '/umbraco/backoffice/MediaRetention/MediaRetentionApi/';
+        var apiRoot = umbRequestHelper.getApiUrl("MediaRetentionBaseUrl", "");
 
         var request = (method, url, data) =>
             umbRequestHelper.resourcePromise(
