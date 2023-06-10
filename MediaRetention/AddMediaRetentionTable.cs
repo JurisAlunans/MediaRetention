@@ -30,8 +30,12 @@ namespace MediaRetention
         [ExplicitColumns]
         public class MediaRetentionSchema
         {
-            public MediaRetentionSchema()
+            public MediaRetentionSchema(int mediaId, int? userId, string fileName, string directoryPath)
             {
+                MediaId = mediaId;
+                UserId = userId;
+                FileName = fileName;
+                DirectoryPath = directoryPath;
                 Created = DateTime.UtcNow;
             }
 
@@ -46,11 +50,11 @@ namespace MediaRetention
             public int? UserId { get; set; }
 
             [Column("FileName")]
-            public required string FileName { get; set; }
+            public string FileName { get; set; }
 
             [Column("DirectoryPath")]
             [Length(500)]
-            public required string DirectoryPath { get; set; }
+            public string DirectoryPath { get; set; }
 
             [Column("Created")]
             public DateTime Created { get; set; }

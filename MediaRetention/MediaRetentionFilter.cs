@@ -8,19 +8,15 @@ namespace MediaRetention
         {
             manifests.Add(new PackageManifest
             {
-                Version = "1.0",
+                Version = "0.1",
                 AllowPackageTelemetry = true,
                 PackageName = Constants.PluginName,
                 Scripts = new[]
                 {
                     "/App_Plugins/MediaRetention/mediaRetention.controller.js",
                     "/App_Plugins/MediaRetention/mediaRetention.resources.js"
-                },
-                Stylesheets = new[]
-                {
-                    "/App_Plugins/MyPackage/mystyles.css"
                 }
-                });
+            });
         }
     }
 }

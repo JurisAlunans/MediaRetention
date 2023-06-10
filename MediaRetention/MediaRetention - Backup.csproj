@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
-	<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+    <TargetFramework>net6.0,net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <StaticWebAssetBasePath>/</StaticWebAssetBasePath>
@@ -15,15 +15,15 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-	<PackageReference Include="Umbraco.Cms.Infrastructure" Version="10.0.0" />
 	<PackageReference Include="Umbraco.Cms.Web.Website" Version="10.0.0" />
 	<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="10.0.0" />
- </ItemGroup>
+	<PackageReference Include="Umbraco.Cms.Infrastructure" Version="10.0.0" />
+  </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
-	<PackageReference Include="Umbraco.Cms.Infrastructure" Version="11.0.0" />
 	<PackageReference Include="Umbraco.Cms.Web.Website" Version="11.0.0" />
 	<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="11.0.0" />
+	<PackageReference Include="Umbraco.Cms.Infrastructure" Version="11.0.0" />
   </ItemGroup>
 
   <ItemGroup>

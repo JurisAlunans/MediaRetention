@@ -62,17 +62,17 @@ namespace MediaRetention.Services
         }
 
         public void Save(IMedia media, int? userId)
-        {
-            //string? file = media.GetValue<string>(Conventions.Media.File)?.ToString();
-            string? file = media.GetUrl(Conventions.Media.File, _mediaUrlGeneratorCollection);
-            if (string.IsNullOrEmpty(file))
+        {          
+            media.TryGetMediaPath(Conventions.Media.File, _mediaUrlGeneratorCollection, out string? mediaFilePath);
+            
+            if (string.IsNullOrEmpty(mediaFilePath))
             {
                 _logger.LogWarning("Media Retention - file property is empty, mediaId - @0", media.Id);
 
                 return;
             } 
 
-            var filePath = _webHostEnvironment.MapPathWebRoot(file);
+            var filePath = _webHostEnvironment.MapPathWebRoot(mediaFilePath);
 
             if (System.IO.File.Exists(filePath))
             {
@@ -89,13 +89,7 @@ namespace MediaRetention.Services
                 DeleteBackupsOverLimit(media.Id);
 
                 using var scope = _scopeProvider.CreateScope();
-                scope.Database.Insert(new MediaRetentionSchema()
-                {
-                    FileName = fileName,
-                    DirectoryPath = backupRelativeDirectoryPath,
-                    UserId = userId,
-                    MediaId = media.Id
-                });
+                scope.Database.Insert(new MediaRetentionSchema(media.Id, userId, fileName, backupRelativeDirectoryPath));
 
                 scope.Complete();
             }
@@ -105,7 +99,7 @@ namespace MediaRetention.Services
         {
             var file = GetMediaRetentionById(id);
 
-            if (file != null)
+            if (file?.FileName != null)
             {
                 var media = _mediaService.GetById(file.MediaId);
 
@@ -130,7 +124,7 @@ namespace MediaRetention.Services
         {
             var file = GetMediaRetentionById(id);
 
-            if (file != null)
+            if (file?.DirectoryPath != null)
             {
                 using var scope = _scopeProvider.CreateScope();
                 var result = scope.Database.Delete<MediaRetentionSchema>("WHERE [Id] = @0", id);
@@ -160,7 +154,7 @@ namespace MediaRetention.Services
             using var scope = _scopeProvider.CreateScope();
             var queryResults = scope.Database.Fetch<MediaRetentionDto>
                 ("SELECT mr.Id, mr.MediaId, mr.DirectoryPath, mr.Created, mr.FileName, uu.username" +
-                " FROM [MediaRetention] mr LEFT JOIN [umbracoUser] uu on mr.UserId = uu.id WHERE MediaId = @0", mediaId);
+                " FROM [MediaRetention] mr LEFT JOIN [umbracoUser] uu on mr.UserId = uu.id WHERE MediaId = @0 ORDER BY Created DESC", mediaId);
             scope.Complete();
             return queryResults;
         }
@@ -186,10 +180,12 @@ namespace MediaRetention.Services
         {
             using var scope = _scopeProvider.CreateScope();
 
-            var result = scope.Database.Fetch<MediaRetentionSchema>("WHERE [mediaId] = @0 ORDER BY Created",mediaId);
+            var result = scope.Database.Fetch<MediaRetentionSchema>("WHERE [MediaId] = @0 ORDER BY Created desc",mediaId);
 
-            if (result != null && !result.Any() && result.Count >= _mediaRetentionSettings.Value.BackupFileLimit)
+            if (result != null && result.Any() && result.Count >= _mediaRetentionSettings.Value.BackupFileLimit)
             {
+                result = result.Skip(_mediaRetentionSettings.Value.BackupFileLimit - 1).ToList();
+
                 foreach(var file in result)
                 {
                     DeleteDirectory(file.DirectoryPath);

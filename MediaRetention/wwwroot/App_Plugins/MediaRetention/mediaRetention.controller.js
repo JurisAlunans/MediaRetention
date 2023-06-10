@@ -1,16 +1,16 @@
 (() => {
-
     angular
         .module('umbraco')
         .controller(
             'MediaRetentionController',
-            function ($scope, mediaRetentionService, eventsService, editorState, notificationsService, $route) {
+            function (mediaRetentionService, eventsService, editorState, notificationsService, $route) {
                 var vm = this;
 
                 vm.items = [];
 
-                vm.restore = restore;
+                vm.restoreFile = restoreFile;
                 vm.deleteFile = deleteFile;
+                vm.downloadFile = downloadFile;
                 vm.formatDate = formatDate;
 
                 eventsService.on('app.tabChange', function (event, args) {
@@ -19,7 +19,7 @@
                     }
                 });           
 
-                function restore(id) {
+                function restoreFile(id) {
                     mediaRetentionService.restore(id).then(
                         function (response) {
                             if (response) {
@@ -52,6 +52,17 @@
                     );
                 }
 
+                function downloadFile(id) {
+                    mediaRetentionService.download(id).then(
+                        function (response) {
+                              notificationsService.success('Success', 'File downloaded');
+                        },
+                        function (error) {
+                            showErrorNotification();
+                        }
+                    );
+                }
+
                 function loadTableItems() {
                     mediaRetentionService.getAll(editorState.current.id).then(
                         function (response) {
@@ -64,7 +75,7 @@
                 }
 
                 function formatDate(date) {
-                    return new Date(date).toLocaleDateString();
+                    return new Date(date).toLocaleString();
                 }
 
                 function showErrorNotification() {
@@ -72,5 +83,4 @@
                 }
             }
         );
-
 })();

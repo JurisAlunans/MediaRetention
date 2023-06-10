@@ -8,9 +8,9 @@
 
         public string? Username { get; set; }
 
-        public required string FileName { get; set; }
+        public string? FileName { get; set; }
 
-        public required string DirectoryPath { get; set; }
+        public string? DirectoryPath { get; set; }
 
         public DateTime Created { get; set; }
     }

@@ -1,9 +1,9 @@
 (() => {
     function mediaRetentionService($http, umbRequestHelper) {
 
-        var apiRoot = umbRequestHelper.getApiUrl("MediaRetentionBaseUrl", "");
+        let apiRoot = umbRequestHelper.getApiUrl("MediaRetentionBaseUrl", "");
 
-        var request = (method, url, data) =>
+        let request = (method, url, data) =>
             umbRequestHelper.resourcePromise(
                 method === 'DELETE' ? $http.delete(url)
                     : method === 'POST' ? $http.post(url, data)
@@ -15,7 +15,8 @@
         const service = {
             getAll: (mediaId) => request('GET', apiRoot + 'GetAll?mediaId=' + mediaId),
             delete: (id) => request('DELETE', apiRoot + 'Delete?id=' + id),
-            restore: (id) => request('POST', apiRoot + 'Restore?id=' + id)
+            restore: (id) => request('POST', apiRoot + 'Restore?id=' + id),
+            download: (id) => umbRequestHelper.downloadFile(apiRoot + "Download?id=" + id)
         };
 
         return service;

@@ -1,6 +1,8 @@
 ﻿using MediaRetention.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using System.Net.Mime;
 using Umbraco.Cms.Core.Extensions;
 using Umbraco.Cms.Web.BackOffice.Controllers;
 using Umbraco.Cms.Web.Common.Attributes;
@@ -35,18 +37,23 @@ namespace MediaRetention.Controllers
 
             var filePath = _webHostEnvironment.MapPathContentRoot($"{file.DirectoryPath}/{file.FileName}");
 
-            if (!System.IO.File.Exists(filePath)) return NotFound();
-
-            return new FileStreamResult(System.IO.File.OpenRead(filePath), MimeTypes.GetMimeType(file.FileName))
+            if (!System.IO.File.Exists(filePath))
             {
-                FileDownloadName = file.FileName
-            };
+              
+               return ValidationProblem("No file found for path " + filePath);
+                
+            }
+
+            // Set custom header so umbRequestHelper.downloadFile can save the correct filename
+            Response.Headers.Add("x-filename", WebUtility.UrlEncode(file.FileName));
+
+            return File(System.IO.File.OpenRead(filePath), MediaTypeNames.Application.Octet, file.FileName);
         }
 
         [HttpPost]
         public IActionResult Restore(int id)
         {
-            return Ok(_mediaRetentionService.GetMediaRetentionById(id));
+            return Ok(_mediaRetentionService.Restore(id));
         }
 
         [HttpDelete]
