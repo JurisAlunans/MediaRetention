@@ -4,7 +4,7 @@
         .module('umbraco')
         .controller(
             'MediaRetentionController',
-            function ($scope, mediaRetentionService, eventsService, editorState, notificationsService) {
+            function ($scope, mediaRetentionService, eventsService, editorState, notificationsService, $route) {
                 var vm = this;
 
                 vm.items = [];
@@ -19,7 +19,7 @@
                     }
                 });           
 
-                function restore() {
+                function restore(id) {
                     mediaRetentionService.restore(id).then(
                         function (response) {
                             if (response) {
@@ -36,7 +36,7 @@
                     );
                 }
 
-                function deleteFile() {
+                function deleteFile(id) {
                     mediaRetentionService.delete(id).then(
                         function (response) {
                             if (response) {

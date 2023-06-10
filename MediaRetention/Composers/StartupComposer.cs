@@ -1,5 +1,6 @@
 ﻿using MediaRetention.Configuration;
 using MediaRetention.NotificationHandlers;
+using MediaRetention.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Umbraco.Cms.Core.Composing;
@@ -18,10 +19,13 @@ namespace MediaRetention.Composers
         {
             builder.ManifestFilters().Append<MediaRetentionFilter>();
 
+            builder.Services.AddTransient<MediaRetentionService>();
+
             builder.ContentApps().Append<MediaRetentionContentApp>();
 
             builder.AddNotificationHandler<UmbracoApplicationStartingNotification, RunMediaRetentionMigration>();
             builder.AddNotificationHandler<ServerVariablesParsingNotification, ServerVariables>();
+            builder.AddNotificationHandler<MediaSavedNotification, MediaSaved>();
 
             builder.Services.Configure<MediaRetentionSettings>(builder.Config.GetSection(Constants.PluginName));
         }

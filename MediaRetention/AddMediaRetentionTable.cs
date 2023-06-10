@@ -49,6 +49,7 @@ namespace MediaRetention
             public required string FileName { get; set; }
 
             [Column("DirectoryPath")]
+            [Length(500)]
             public required string DirectoryPath { get; set; }
 
             [Column("Created")]

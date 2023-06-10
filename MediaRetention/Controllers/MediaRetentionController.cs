@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Umbraco.Cms.Core.Extensions;
 using Umbraco.Cms.Web.BackOffice.Controllers;
 using Umbraco.Cms.Web.Common.Attributes;
-using Umbraco.Cms.Web.Common.Filters;
 
 namespace MediaRetention.Controllers
 {
@@ -22,7 +21,7 @@ namespace MediaRetention.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll(int mediaId)
+        public object GetAll([FromQuery]int mediaId)
         {
             return Ok(_mediaRetentionService.GetAll(mediaId));
         }
@@ -51,9 +50,9 @@ namespace MediaRetention.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteAsync(int id) 
+        public IActionResult Delete(int id) 
         {
-            return Ok(await _mediaRetentionService.DeleteAsync(id));
+            return Ok(_mediaRetentionService.DeleteById(id));
         }
     }
 }

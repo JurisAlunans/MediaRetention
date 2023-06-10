@@ -14,6 +14,7 @@ using Umbraco.Cms.Infrastructure.Scoping;
 using Umbraco.Extensions;
 using static MediaRetention.AddMediaRetentionTable;
 using static Umbraco.Cms.Core.Constants;
+using static Umbraco.Cms.Core.Constants.Conventions;
 
 namespace MediaRetention.Services
 {
@@ -53,15 +54,17 @@ namespace MediaRetention.Services
         public MediaRetentionDto? GetMediaRetentionById(int id)
         {
             using var scope = _scopeProvider.CreateScope();
-            var result = scope.Database.Fetch<MediaRetentionDto>("WHERE [Id] = @0", id);
+            var result = scope.Database.Fetch<MediaRetentionDto>
+                ("SELECT mr.Id, mr.MediaId, mr.DirectoryPath, mr.Created, mr.FileName, uu.username" +
+                " FROM [MediaRetention] mr LEFT JOIN [umbracoUser] uu on mr.UserId = uu.id WHERE mr.Id = @0", id);
 
             return result.MaxBy(x => x.Created);
         }
 
         public void Save(IMedia media, int? userId)
         {
-            string? file = media.GetValue(Conventions.Media.File)?.ToString();
-
+            //string? file = media.GetValue<string>(Conventions.Media.File)?.ToString();
+            string? file = media.GetUrl(Conventions.Media.File, _mediaUrlGeneratorCollection);
             if (string.IsNullOrEmpty(file))
             {
                 _logger.LogWarning("Media Retention - file property is empty, mediaId - @0", media.Id);
@@ -81,7 +84,7 @@ namespace MediaRetention.Services
 
                 string fileName = Path.GetFileName(filePath);
 
-                System.IO.File.Copy(filePath, backupAbsoluteDirectoryPath, true);
+                System.IO.File.Copy(filePath, $"{backupAbsoluteDirectoryPath}/{fileName}", true);
 
                 DeleteBackupsOverLimit(media.Id);
 
@@ -131,7 +134,7 @@ namespace MediaRetention.Services
             {
                 using var scope = _scopeProvider.CreateScope();
                 var result = scope.Database.Delete<MediaRetentionSchema>("WHERE [Id] = @0", id);
-
+                scope.Complete();
                 DeleteDirectory(file.DirectoryPath);
 
                 return result == 1;
@@ -156,8 +159,8 @@ namespace MediaRetention.Services
         {
             using var scope = _scopeProvider.CreateScope();
             var queryResults = scope.Database.Fetch<MediaRetentionDto>
-                ("SELECT mr.Id, mr.MediaId, mr.FileId, mr.DirectoryPath, mr.Created, mr.FileName, uu.username" +
-                " mr. FROM [MediaRetention] LEFT JOIN [umbracoUser] uu mr.UserId = uu.UserId WHERE MediaId = @0", mediaId);
+                ("SELECT mr.Id, mr.MediaId, mr.DirectoryPath, mr.Created, mr.FileName, uu.username" +
+                " FROM [MediaRetention] mr LEFT JOIN [umbracoUser] uu on mr.UserId = uu.id WHERE MediaId = @0", mediaId);
             scope.Complete();
             return queryResults;
         }
@@ -183,7 +186,7 @@ namespace MediaRetention.Services
         {
             using var scope = _scopeProvider.CreateScope();
 
-            var result = scope.Database.Fetch<MediaRetentionSchema>("WHERE [mediaId] = @0 ORDERBY Created",mediaId);
+            var result = scope.Database.Fetch<MediaRetentionSchema>("WHERE [mediaId] = @0 ORDER BY Created",mediaId);
 
             if (result != null && !result.Any() && result.Count >= _mediaRetentionSettings.Value.BackupFileLimit)
             {

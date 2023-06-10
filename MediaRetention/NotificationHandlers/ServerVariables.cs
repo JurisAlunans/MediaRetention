@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Umbraco.Cms.Core;
-using Umbraco.Cms.Core.Events;
-using Umbraco.Cms.Core.Migrations;
+﻿using Umbraco.Cms.Core.Events;
 using Umbraco.Cms.Core.Notifications;
-using Umbraco.Cms.Core.Scoping;
-using Umbraco.Cms.Core.Services;
-using Umbraco.Cms.Infrastructure.Migrations.Upgrade;
-using Umbraco.Cms.Infrastructure.Migrations;
 using Microsoft.AspNetCore.Routing;
 using Umbraco.Extensions;
 using MediaRetention.Controllers;
@@ -45,7 +34,10 @@ namespace MediaRetention.NotificationHandlers
             var mediaRetentionControllerUrl = _linkGenerator
                 .GetUmbracoApiServiceBaseUrl<MediaRetentionApiController>(controller => controller.GetAll(0));
 
-            umbracoUrls[Constants.PluginName + "BaseUrl"] = mediaRetentionControllerUrl;
+            if (!string.IsNullOrEmpty(mediaRetentionControllerUrl))
+            {
+                umbracoUrls[Constants.PluginName + "BaseUrl"] = mediaRetentionControllerUrl;
+            }
         }
     }
 }

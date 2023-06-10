@@ -14,9 +14,9 @@
             <uui-table-cell clip-text>{{vm.formatDate(item.created)}}</uui-table-cell>
             <uui-table-cell >
                 <uui-button-group>
-                    <uui-button look="primary" color="positive">Restore</uui-button>
-                    <uui-button look="primary" color="default">Download</uui-button>
-                    <uui-button look="primary" color="danger">Delete</uui-button>
+                    <uui-button look="primary" label="Restore" ng-click="vm.restore(item.Id)" color="positive">Restore</uui-button>
+                    <uui-button look="primary" label="Download" color="default">Download</uui-button>
+                    <uui-button look="primary" label="Delete" ng-click="vm.deleteFile(item.Id)" color="danger">Delete</uui-button>
                 </uui-button-group>
             </uui-table-cell>
         </uui-table-row>
