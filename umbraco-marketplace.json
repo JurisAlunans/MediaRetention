@@ -1,0 +1,21 @@
+{
+    "$schema": "https://marketplace.umbraco.com/umbraco-marketplace-schema.json",
+    "Category": "Editor Tools",
+    "Description": "Media file backups",
+    "IssueTrackerUrl": "https://github.com/JurisAlunans/MediaRetention/issues",
+    "LicenseTypes": [ "Free" ],
+    "PackageType": "Package",
+    "Screenshots": [
+      {
+        "ImageUrl": "https://raw.github.com/JurisAlunans/MediaRetention/main/screenshots/contentApp.png",
+        "Caption": "Media Retention ContentApp"
+      }
+    ],
+    "Tags": [
+      "backoffice"
+    ],
+    "Title": "MediaRetention",
+    "AuthorDetails": {
+        "Name": "JurisAlunans"
+      }
+  }
