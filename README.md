@@ -17,9 +17,7 @@ dotnet add package MediaRetention
 
 When installed, contentApp will be added to any media file that has default "umbracoFile" property. In contentApp it's possible to restore, download and delete backup file.
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
-![ContentApp Screenshot](/screenshots/path/contentApp.png?raw=true)
-
+![ContentApp Screenshot](/screenshots/contentApp.png?raw=true)
 
 ## Configuration
 
