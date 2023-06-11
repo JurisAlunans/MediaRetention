@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
 	<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <Nullable>enable</Nullable>
@@ -9,8 +9,14 @@
   <PropertyGroup>
     <PackageId>MediaRetention</PackageId>
     <Product>MediaRetention</Product>
-    <Title>MediaRetention</Title>
-    <Description>...</Description>
+    <Title>Media Retention</Title>
+	<Version>1.0.0</Version>
+	<Authors>Juris Alunans</Authors>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<PackageProjectUrl>https://github.com/JurisAlunans/MediaRetention</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/JurisAlunans/MediaRetention</RepositoryUrl>
+	<RepositoryType>git</RepositoryType>
+    <Description>Backups for media files</Description>
     <PackageTags>umbraco plugin package</PackageTags>
   </PropertyGroup>
 

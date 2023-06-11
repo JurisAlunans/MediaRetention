@@ -8,7 +8,7 @@ namespace MediaRetention
         {
             manifests.Add(new PackageManifest
             {
-                Version = "0.1",
+                Version = "1.0",
                 AllowPackageTelemetry = true,
                 PackageName = Constants.PluginName,
                 Scripts = new[]

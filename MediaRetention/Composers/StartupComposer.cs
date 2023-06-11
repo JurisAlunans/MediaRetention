@@ -26,6 +26,7 @@ namespace MediaRetention.Composers
             builder.AddNotificationHandler<UmbracoApplicationStartingNotification, RunMediaRetentionMigration>();
             builder.AddNotificationHandler<ServerVariablesParsingNotification, ServerVariables>();
             builder.AddNotificationHandler<MediaSavedNotification, MediaSaved>();
+            builder.AddNotificationHandler<MediaDeletedNotification, MediaDeleted>();
 
             builder.Services.Configure<MediaRetentionSettings>(builder.Config.GetSection(Constants.PluginName));
         }

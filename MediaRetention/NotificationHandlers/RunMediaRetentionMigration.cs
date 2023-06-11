@@ -11,6 +11,7 @@ using Umbraco.Cms.Core.Scoping;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Infrastructure.Migrations.Upgrade;
 using Umbraco.Cms.Infrastructure.Migrations;
+using MediaRetention.Migrations;
 
 namespace MediaRetention.NotificationHandlers
 {

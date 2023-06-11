@@ -12,9 +12,8 @@ using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Strings;
 using Umbraco.Cms.Infrastructure.Scoping;
 using Umbraco.Extensions;
-using static MediaRetention.AddMediaRetentionTable;
+using static MediaRetention.Migrations.AddMediaRetentionTable;
 using static Umbraco.Cms.Core.Constants;
-using static Umbraco.Cms.Core.Constants.Conventions;
 
 namespace MediaRetention.Services
 {
@@ -137,7 +136,7 @@ namespace MediaRetention.Services
             return false;
         }
 
-        public bool DeleteByMediaId(int mediaId)
+        public void DeleteByMediaId(int mediaId)
         {
             var directoryPath = _webHostEnvironment.MapPathContentRoot($"{_mediaRetentionSettings.Value.BackupRootDirectory}/{mediaId}");
 
@@ -145,8 +144,11 @@ namespace MediaRetention.Services
 
             using var scope = _scopeProvider.CreateScope();
             var result = scope.Database.Delete<MediaRetentionSchema>("WHERE [MediaId] = @0", mediaId);
-
-            return result == 1;
+            scope.Complete();
+            if (result > 0)
+            {
+                _logger.LogInformation("Deleted media retention {count} file(s), mediaId - {id}", result, mediaId);
+            }
         }
 
         public List<MediaRetentionDto>? GetAll(int mediaId)
@@ -193,6 +195,8 @@ namespace MediaRetention.Services
 
                 scope.Database.DeleteMany<MediaRetentionSchema>()
                     .Where(x => x.Id.In(result.Select(y => y.Id))).Execute();
+
+                _logger.LogInformation("Deleted media retention {count} files over limit, mediaId - {id}", result.Count, mediaId);
             }
 
             scope.Complete();

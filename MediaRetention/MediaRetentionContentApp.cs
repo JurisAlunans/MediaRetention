@@ -1,5 +1,4 @@
-﻿using Umbraco.Cms.Core;
-using Umbraco.Cms.Core.Models;
+﻿using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.ContentEditing;
 using Umbraco.Cms.Core.Models.Membership;
 
@@ -16,7 +15,7 @@ namespace MediaRetention
                 {
                     Alias = "mediaRetention",
                     Name = "Media Retention",
-                    Icon = "icon-layers-alt",
+                    Icon = "icon-media-retention",
                     View = "/App_Plugins/MediaRetention/mediaRetention.html",
                     Weight = 999
                 };

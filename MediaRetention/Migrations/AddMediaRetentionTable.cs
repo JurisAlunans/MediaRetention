@@ -3,7 +3,7 @@ using NPoco;
 using Umbraco.Cms.Infrastructure.Migrations;
 using Umbraco.Cms.Infrastructure.Persistence.DatabaseAnnotations;
 
-namespace MediaRetention
+namespace MediaRetention.Migrations
 {
     public class AddMediaRetentionTable : MigrationBase
     {

@@ -1,25 +1,26 @@
 <div ng-controller="MediaRetentionController as vm">
-    <uui-table aria-label="Backup file list table" ng-show="vm.items.length > 0">
+    <uui-box>
+        <p ng-show="vm.items.length === 0"><strong>No files found.</strong></p>
+        <uui-table aria-label="Backup file list table" ng-show="vm.items.length > 0">
+            <uui-table-head>
+                <uui-table-head-cell>File name</uui-table-head-cell>
+                <uui-table-head-cell>Date</uui-table-head-cell>
+                <uui-table-head-cell>Created By</uui-table-head-cell>
+                <uui-table-head-cell>Actions</uui-table-head-cell>
+            </uui-table-head>
 
-        <uui-table-head>
-            <uui-table-head-cell>File name</uui-table-head-cell>
-            <uui-table-head-cell>Date</uui-table-head-cell>
-            <uui-table-head-cell>Created By</uui-table-head-cell>
-            <uui-table-head-cell>Actions</uui-table-head-cell>
-        </uui-table-head>
-
-        <uui-table-row ng-repeat="item in vm.items">
-            <uui-table-cell>{{item.FileName}}</uui-table-cell>
-            <uui-table-cell>{{vm.formatDate(item.Created)}}</uui-table-cell>
-            <uui-table-cell clip-text>{{item.Username}}</uui-table-cell>
-            <uui-table-cell>
-                <uui-button-group>
-                    <uui-button look="primary" label="Restore" ng-click="vm.restoreFile(item.Id)" color="positive">Restore</uui-button>
-                    <uui-button look="primary" label="Download" ng-click="vm.downloadFile(item.Id)" color="default">Download</uui-button>
-                    <uui-button look="primary" label="Delete" ng-click="vm.deleteFile(item.Id)" color="danger">Delete</uui-button>
-                </uui-button-group>
-            </uui-table-cell>
-        </uui-table-row>
-
-    </uui-table>
+            <uui-table-row ng-repeat="item in vm.items">
+                <uui-table-cell>{{item.FileName}}</uui-table-cell>
+                <uui-table-cell>{{vm.formatDate(item.Created)}}</uui-table-cell>
+                <uui-table-cell clip-text>{{item.Username}}</uui-table-cell>
+                <uui-table-cell>
+                    <uui-button-group>
+                        <uui-button look="primary" label="Restore" ng-click="vm.restoreFile(item.Id)" color="positive">Restore</uui-button>
+                        <uui-button look="primary" label="Download" ng-click="vm.downloadFile(item.Id)" color="default">Download</uui-button>
+                        <uui-button look="primary" label="Delete" ng-click="vm.deleteFile(item.Id)" color="danger">Delete</uui-button>
+                    </uui-button-group>
+                </uui-table-cell>
+            </uui-table-row>
+        </uui-table>
+    </uui-box>
 </div>
