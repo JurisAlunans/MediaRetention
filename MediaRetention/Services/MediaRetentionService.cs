@@ -62,28 +62,34 @@ namespace MediaRetention.Services
 
         public void Save(IMedia media, int? userId)
         {          
-            media.TryGetMediaPath(Conventions.Media.File, _mediaUrlGeneratorCollection, out string? mediaFilePath);
-            
-            if (string.IsNullOrEmpty(mediaFilePath))
+            media.TryGetMediaPath(Conventions.Media.File, _mediaUrlGeneratorCollection, out string? filePath);
+
+            if (string.IsNullOrEmpty(filePath))
             {
                 _logger.LogWarning("Media Retention - file property is empty, mediaId - @0", media.Id);
 
                 return;
-            } 
+            }
 
-            var filePath = _webHostEnvironment.MapPathWebRoot(mediaFilePath);
-
-            if (System.IO.File.Exists(filePath))
+            if (_mediaFileManager.FileSystem.FileExists(filePath))
             {
                 string backupRelativeDirectoryPath = $"{_mediaRetentionSettings.Value.BackupRootDirectory}/{media.Id}/{Guid.NewGuid()}";
 
-                string backupAbsoluteDirectoryPath = _webHostEnvironment.MapPathContentRoot(backupRelativeDirectoryPath);
+                string backupAbsoluteDirectoryPath = MapFilePath(backupRelativeDirectoryPath);
 
                 Directory.CreateDirectory(backupAbsoluteDirectoryPath);
 
                 string fileName = Path.GetFileName(filePath);
 
-                System.IO.File.Copy(filePath, $"{backupAbsoluteDirectoryPath}/{fileName}", true);
+                var stream = _mediaFileManager.FileSystem.OpenFile(filePath);
+                stream.Seek(0, SeekOrigin.Begin);
+
+                using (var fileStream = new FileStream($"{backupAbsoluteDirectoryPath}/{fileName}", FileMode.Create, FileAccess.Write))
+                {
+                    stream.CopyTo(fileStream);
+                }
+
+                stream.Close();
 
                 DeleteBackupsOverLimit(media.Id);
 
@@ -138,7 +144,7 @@ namespace MediaRetention.Services
 
         public void DeleteByMediaId(int mediaId)
         {
-            var directoryPath = _webHostEnvironment.MapPathContentRoot($"{_mediaRetentionSettings.Value.BackupRootDirectory}/{mediaId}");
+            var directoryPath = MapFilePath($"{_mediaRetentionSettings.Value.BackupRootDirectory}/{mediaId}");
 
             DeleteDirectory(directoryPath);
 
@@ -168,6 +174,13 @@ namespace MediaRetention.Services
             scope.Complete();
 
             return result == 1;
+        }
+
+        public string MapFilePath(string filePath)
+        {
+            if (string.Equals(_mediaRetentionSettings.Value.FileMode, FileModes.Absolute, StringComparison.InvariantCultureIgnoreCase)) return filePath;
+
+            return _webHostEnvironment.MapPathContentRoot(filePath);
         }
 
         private void DeleteDirectory(string path)

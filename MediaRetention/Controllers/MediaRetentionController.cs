@@ -1,9 +1,7 @@
 ﻿using MediaRetention.Services;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Net.Mime;
-using Umbraco.Cms.Core.Extensions;
 using Umbraco.Cms.Web.BackOffice.Controllers;
 using Umbraco.Cms.Web.Common.Attributes;
 
@@ -13,13 +11,10 @@ namespace MediaRetention.Controllers
     public class MediaRetentionApiController : UmbracoAuthorizedApiController
     {
         private readonly MediaRetentionService _mediaRetentionService;
-        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public MediaRetentionApiController(MediaRetentionService mediaRetentionService,
-            IWebHostEnvironment webHostEnvironment)
+        public MediaRetentionApiController(MediaRetentionService mediaRetentionService)
         {
             _mediaRetentionService = mediaRetentionService;
-            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet]
@@ -35,7 +30,7 @@ namespace MediaRetention.Controllers
 
             if (file == null) return NotFound();
 
-            var filePath = _webHostEnvironment.MapPathContentRoot($"{file.DirectoryPath}/{file.FileName}");
+            var filePath = _mediaRetentionService.MapFilePath($"{file.DirectoryPath}/{file.FileName}");
 
             if (!System.IO.File.Exists(filePath))
             {
