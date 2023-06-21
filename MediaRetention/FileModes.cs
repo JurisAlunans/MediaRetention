@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MediaRetention
 {
-    public static class FileModes
+    public static class PathModes
     {
         public static readonly string Relative = "Relative";
         public static readonly string Absolute = "Absolute";

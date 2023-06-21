@@ -134,7 +134,7 @@ namespace MediaRetention.Services
                 using var scope = _scopeProvider.CreateScope();
                 var result = scope.Database.Delete<MediaRetentionSchema>("WHERE [Id] = @0", id);
                 scope.Complete();
-                DeleteDirectory(file.DirectoryPath);
+                DeleteDirectory(MapFilePath(file.DirectoryPath));
 
                 return result == 1;
             }
@@ -178,7 +178,7 @@ namespace MediaRetention.Services
 
         public string MapFilePath(string filePath)
         {
-            if (string.Equals(_mediaRetentionSettings.Value.FileMode, FileModes.Absolute, StringComparison.InvariantCultureIgnoreCase)) return filePath;
+            if (string.Equals(_mediaRetentionSettings.Value.PathMode, PathModes.Absolute, StringComparison.InvariantCultureIgnoreCase)) return filePath;
 
             return _webHostEnvironment.MapPathContentRoot(filePath);
         }
@@ -203,7 +203,7 @@ namespace MediaRetention.Services
 
                 foreach(var file in result)
                 {
-                    DeleteDirectory(file.DirectoryPath);
+                    DeleteDirectory(MapFilePath(file.DirectoryPath));
                 }
 
                 scope.Database.DeleteMany<MediaRetentionSchema>()
