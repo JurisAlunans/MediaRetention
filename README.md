@@ -23,11 +23,13 @@ When installed, contentApp will be added to any media file that has default "umb
 ```  
 "MediaRetention": {
     "BackupFileLimit": 3,
-    "BackupRootDirectory": "/umbraco/mediaRetention"
+    "BackupRootDirectory": "/umbraco/mediaRetention",
+    "PathMode": "Relative"
 }
 ```
 
 By default it saves only 3 latest versions of media file.
+PathMode can be also set to "Absolute" then you can use full path like "Z:/mediaRetention"
 
 
 ## Credits
