@@ -1,7 +1,7 @@
 
 # Media Retention
 
-Umbraco package for media file backups for Umbraco 10, 11.
+Umbraco package for media file backups for Umbraco 10, 11, 12.
 Currently supports physical file system and on-premise Umbraco.
 
 ## Installation

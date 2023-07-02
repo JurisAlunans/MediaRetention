@@ -17,7 +17,7 @@
 	<PackageProjectUrl>https://github.com/JurisAlunans/MediaRetention</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/JurisAlunans/MediaRetention</RepositoryUrl>
 	<RepositoryType>git</RepositoryType>
-    <Description>Umbraco - backups for media files</Description>
+    <Description>The Media Retention package for Umbraco CMS that backups your media files with options to preview or restore earlier media file versions.</Description>
     <PackageTags>umbraco plugin package umbraco-marketplace</PackageTags>
   </PropertyGroup>
 
