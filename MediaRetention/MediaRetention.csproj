@@ -11,7 +11,7 @@
 	<PackageIcon>icon.png</PackageIcon>
     <Product>MediaRetention</Product>
     <Title>Media Retention</Title>
-	<Version>1.1.0</Version>
+	<Version>1.1.1</Version>
 	<Authors>Juris Alunans</Authors>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<PackageProjectUrl>https://github.com/JurisAlunans/MediaRetention</PackageProjectUrl>
