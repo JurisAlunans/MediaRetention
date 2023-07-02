@@ -1,7 +1,7 @@
 {
     "$schema": "https://marketplace.umbraco.com/umbraco-marketplace-schema.json",
     "Category": "Editor Tools",
-    "Description": "Media file backups",
+    "Description": "The Media Retention package backups your media files with options to preview or restore earlier media file versions.",
     "IssueTrackerUrl": "https://github.com/JurisAlunans/MediaRetention/issues",
     "LicenseTypes": [ "Free" ],
     "PackageType": "Package",
@@ -14,7 +14,7 @@
     "Tags": [
       "backoffice"
     ],
-    "Title": "MediaRetention",
+    "Title": "Media Retention",
     "AuthorDetails": {
         "Name": "JurisAlunans"
       }
